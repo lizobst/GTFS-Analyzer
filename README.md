@@ -7,7 +7,7 @@ A data-driven web application that transforms raw GTFS (General Transit Feed Spe
 
 ## Purpose & Applications
 
-This tool was developed as part of research on **bus bunching** and service reliability in public transit systems. It enables:
+This tool was developed as part of research on bus bunching and service reliability in public transit systems. It enables:
 
 ### For Transit Agencies
 - **Service Planning**: Identify routes with irregular headways that may experience bunching
@@ -143,7 +143,7 @@ gtfs-analyzer/
 
 ## Research Context
 
-This tool was developed as part of thesis research on **bus bunching** - the phenomenon where buses on the same route cluster together instead of maintaining even spacing. By analyzing scheduled headways and service patterns, this tool helps identify:
+This tool was developed as part of thesis research on bus bunching - the phenomenon where buses on the same route cluster together instead of maintaining even spacing. By analyzing scheduled headways and service patterns, this tool helps identify:
 
 - Routes most susceptible to bunching (high-frequency routes with < 10 min headways)
 - Time periods when bunching is most likely (peak hours with tight scheduling)
@@ -175,7 +175,6 @@ The insights from this static GTFS analysis serve as a baseline for comparing ag
 - [ ] Historical trend analysis across multiple dates
 - [ ] Export functionality for metrics and visualizations
 - [ ] Advanced filtering (by route type, time windows, service_id)
-- [ ] Comparative analysis between multiple transit agencies
 
 
 ## Author
