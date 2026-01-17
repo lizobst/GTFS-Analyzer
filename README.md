@@ -127,6 +127,8 @@ This tool transforms schedule data from a compliance document into a strategic p
 
 Visit the [live application](https://gtfs-analyzer.streamlit.app/) to start analyzing transit data immediately.
 
+[GTFS Analyzer 0.webm](https://github.com/user-attachments/assets/d0a4951b-834b-4cff-b589-8360c582e432)
+
 
 <br>
 
