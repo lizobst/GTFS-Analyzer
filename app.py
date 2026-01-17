@@ -184,11 +184,11 @@ if st.session_state.gtfs_data is not None:
 
                 with st.spinner("Generating map..."):
                     system_map = create_system_overview_map(gtfs_data, sample_routes=num_routes)
-                    st.components.v1.html(system_map._repr_html_(), height=600)
+                    st.components.v1.html(system_map._repr_html_(), height=800)
             else:
                 with st.spinner("Generating heatmap..."):
                     heatmap = create_stop_heatmap(gtfs_data)
-                    st.components.v1.html(heatmap._repr_html_(), height=600)
+                    st.components.v1.html(heatmap._repr_html_(), height=800)
 
         with tab3:
             st.header("Route Details")
@@ -269,7 +269,7 @@ if st.session_state.gtfs_data is not None:
                     # Route map
                     st.subheader("Route Map")
                     route_map = create_route_map(gtfs_data, route_details=route_details)
-                    st.components.v1.html(route_map._repr_html_(), height=500)
+                    st.components.v1.html(route_map._repr_html_(), height=700)
 
 
         with tab4:
