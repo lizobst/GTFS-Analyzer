@@ -14,7 +14,7 @@ Transit agencies publish schedule data in GTFS (General Transit Feed Specificati
 - Researchers and students analyzing transit systems
 - Community advocates seeking to understand local service
 
-**The gap:** No accessible tool exists for non-technical stakeholders to quickly analyze transit performance without writing code or purchasing expensive software.
+**The gap:** Few accessible tools exist for non-technical stakeholders to analyze transit performance without reliance on code or expensive software.
 
 ## Solution
 
@@ -76,8 +76,9 @@ Applied this tool to VIA Metropolitan Transit as part of bus bunching research. 
 
 ### What the Data Revealed
 <p align="left">
-  <img src="https://github.com/user-attachments/assets/60adc974-d416-42e5-8bcd-e19d6f5c7aae" width="90%" />
+  <img src="https://github.com/user-attachments/assets/622ce3e7-3a62-4804-baae-c7c74c27f3cd" width="90%" />
 </p>
+
 
 **High-Frequency Routes:**
 - Identified 15 routes operating on <10 minute headways
@@ -126,6 +127,8 @@ This tool transforms schedule data from a compliance document into a strategic p
 ## Getting Started
 
 Visit the [live application](https://gtfs-analyzer.streamlit.app/) to start analyzing transit data immediately.
+
+[GTFS Analyzer 0.webm](https://github.com/user-attachments/assets/d0a4951b-834b-4cff-b589-8360c582e432)
 
 
 <br>
