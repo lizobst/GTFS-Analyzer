@@ -14,7 +14,7 @@ Transit agencies publish schedule data in GTFS (General Transit Feed Specificati
 - Researchers and students analyzing transit systems
 - Community advocates seeking to understand local service
 
-**The gap:** No accessible tool exists for non-technical stakeholders to quickly analyze transit performance without writing code or purchasing expensive software.
+**The gap:** Few accessible tools exist for non-technical stakeholders to analyze transit performance without reliance on code or expensive software.
 
 ## Solution
 
