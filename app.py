@@ -4,6 +4,8 @@ from utils.gtfs_parser import load_gtfs_tables, get_active_service
 from utils.metrics_calculator import *
 from utils.visualizations import *
 import pandas as pd
+from utils.ai_chat import GTFSChatbot
+import os
 
 st.set_page_config(page_title="GTFS Analyzer", layout="wide")
 
@@ -65,6 +67,10 @@ if st.session_state.gtfs_data is not None:
             service_id = active_services[0]
             st.sidebar.info(f"Active service: {service_id}")
 
+        # Pre-calculate metrics for use across tabs
+        route_frequencies = calculate_route_frequencies(gtfs_data, service_id)
+        trips_by_hour = calculate_trips_by_hour(gtfs_data, service_id)
+
         # Create tabs for different views
         tab1, tab2, tab3, tab4 = st.tabs(["Overview", "System Map", "Route Details", "Analytics"])
 
@@ -110,6 +116,53 @@ if st.session_state.gtfs_data is not None:
                 fig = create_peak_offpeak_chart(peak_metrics)
                 st.plotly_chart(fig, use_container_width=True)
 
+            # NOW add the chat section AFTER all the charts
+            st.markdown("---")
+            st.header("Ask Questions About the Data")
+
+            # Initialize chatbot in session state (so it persists)
+            if 'chatbot' not in st.session_state and gtfs_data is not None:
+                st.session_state.chatbot = GTFSChatbot(
+                    api_key=os.environ.get("ANTHROPIC_API_KEY", "YOUR_KEY_HERE"),
+                    gtfs_data=gtfs_data,
+                    route_frequencies=route_frequencies
+                )
+
+            # Initialize chat history
+            if 'chat_history' not in st.session_state:
+                st.session_state.chat_history = []
+
+            # Display chat history
+            for message in st.session_state.chat_history:
+                with st.chat_message(message["role"]):
+                    st.markdown(message["content"])
+
+            # Chat input
+            if prompt := st.chat_input("Ask a question about the transit data..."):
+                # Add user message to history
+                st.session_state.chat_history.append({"role": "user", "content": prompt})
+
+                with st.chat_message("user"):
+                    st.markdown(prompt)
+
+                # Get AI response
+                with st.chat_message("assistant"):
+                    with st.spinner("Analyzing..."):
+                        response = st.session_state.chatbot.ask(prompt)
+
+                        if response['success']:
+                            st.markdown(response['answer'])
+                            with st.expander("See the code"):
+                                st.code(response['code'], language='python')
+                        else:
+                            st.error(response['answer'])
+
+                # Add assistant response to history
+                st.session_state.chat_history.append({
+                    "role": "assistant",
+                    "content": response['answer']
+                })
+
         with tab2:
             st.header("System Maps")
 
@@ -141,21 +194,46 @@ if st.session_state.gtfs_data is not None:
             # Route selector
             routes_list = gtfs_data['routes'][['route_id', 'route_short_name', 'route_long_name']].copy()
 
-            # Remove duplicate route_ids, keeping first occurrence
-            routes_list = routes_list.drop_duplicates(subset='route_id', keep='first')
+            # Filter to routes active on selected date/service
+            if service_id is not None:
+                # Get all route_ids active for this service
+                active_route_ids = gtfs_data['trips'][
+                    gtfs_data['trips']['service_id'] == service_id
+                    ]['route_id'].unique()
+                routes_list = routes_list[routes_list['route_id'].isin(active_route_ids)]
 
             routes_list['display'] = routes_list['route_short_name'].astype(str) + ' - ' + routes_list[
                 'route_long_name']
 
-            # Remove duplicate display names too (in case different route_ids have same name)
-            routes_list = routes_list.drop_duplicates(subset='display', keep='last')
+            # For dates on/after 1-12-25, prioritize service_id starting with 336
+            from datetime import datetime
 
-            # Sort by route number (convert to numeric if possible, otherwise alphabetic)
+            cutoff_date = datetime(2025, 1, 12).date()
+
+            if analysis_date >= cutoff_date:
+                # Add service_id info to help dedupe
+                routes_with_service = pd.merge(
+                    routes_list,
+                    gtfs_data['trips'][['route_id', 'service_id']].drop_duplicates(),
+                    on='route_id'
+                )
+
+                # Prefer routes with service_id starting with 336
+                routes_with_service['is_new_service'] = routes_with_service['service_id'].astype(str).str.startswith(
+                    '336')
+                routes_with_service = routes_with_service.sort_values('is_new_service', ascending=False)
+                routes_list = routes_with_service.drop_duplicates(subset='display', keep='first')
+            else:
+                # Before cutoff, just remove duplicates normally
+                routes_list = routes_list.drop_duplicates(subset='display', keep='first')
+
+            # Sort by route number
             try:
                 routes_list['sort_key'] = pd.to_numeric(routes_list['route_short_name'], errors='coerce')
                 routes_list = routes_list.sort_values('sort_key')
             except:
                 routes_list = routes_list.sort_values('route_short_name')
+
 
             selected_route_display = st.selectbox(
                 "Select a route",
