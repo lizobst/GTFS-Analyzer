@@ -76,8 +76,9 @@ Applied this tool to VIA Metropolitan Transit as part of bus bunching research. 
 
 ### What the Data Revealed
 <p align="left">
-  <img src="https://github.com/user-attachments/assets/60adc974-d416-42e5-8bcd-e19d6f5c7aae" width="90%" />
+  <img src="https://github.com/user-attachments/assets/622ce3e7-3a62-4804-baae-c7c74c27f3cd" width="90%" />
 </p>
+
 
 **High-Frequency Routes:**
 - Identified 15 routes operating on <10 minute headways
