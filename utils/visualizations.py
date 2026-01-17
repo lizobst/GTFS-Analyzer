@@ -128,6 +128,16 @@ def create_headway_distribution(frequency_data):
         annotation_text=f"Mean: {mean_headway:.1f} min"
     )
 
+    fig.update_xaxes(
+        title='Average Headway (minutes)',
+        showgrid=False  # Add this
+    )
+
+    fig.update_yaxes(
+        title='Number of Routes',
+        showgrid=False  # Add this
+    )
+
     return fig
 
 
@@ -179,6 +189,19 @@ def create_trips_by_hour_chart(trips_by_hour_data):
         fillcolor="orange", opacity=0.1,
         layer="below", line_width=0,
         annotation_text="PM Peak", annotation_position="top left"
+    )
+
+    fig.update_xaxes(
+        title='Hour of Day',
+        tickmode='linear',
+        tick0=0,
+        dtick=1,
+        showgrid=False  # Add this
+    )
+
+    fig.update_yaxes(
+        title='Number of Trips',
+        showgrid=False  # Add this
     )
 
     return fig
@@ -284,6 +307,23 @@ def create_peak_offpeak_chart(peak_offpeak_data):
                'categoryarray': ['Pre-Early AM/Other', 'Early AM', 'AM Peak', 'Base', 'PM Peak', 'Evening', 'Late Evening']}
     )
 
+    fig.update_xaxes(
+        title='Time Period',
+        showgrid=False  # Add this
+    )
+
+    fig.update_yaxes(
+        title='Number of Trips',
+        showgrid=False  # Add this
+    )
+
+    fig.update_layout(
+        title='Service Distribution by Time Period',
+        xaxis_tickangle=-45,
+        height=500,  # Increase from 400 to 500
+        showlegend=False
+    )
+
     return fig
 
 def create_busiest_stops_chart(stop_metrics, top_n=10):
@@ -326,6 +366,16 @@ def create_busiest_stops_chart(stop_metrics, top_n=10):
         margin=dict(l=200)
     )
 
+    fig.update_xaxes(
+        title='Number of Trips',
+        showgrid=False  # Add this
+    )
+
+    fig.update_yaxes(
+        title='',
+        showgrid=False  # Add this
+    )
+
     return fig
 
 
@@ -341,11 +391,11 @@ def create_route_frequency_ranking(frequency_data, top_n=15):
     Returns:
         plotly.graph_objects.Figure: Interactive table/chart
     """
-    # Get most frequent (lowest headway)
+    # Get most frequent (lowest headway) and sort ascending
     most_frequent = frequency_data.nsmallest(top_n, 'avg_headway_min').copy()
-    most_frequent = most_frequent.sort_values('avg_headway_min', ascending=True)  # Lowest first
+    most_frequent = most_frequent.sort_values('avg_headway_min', ascending=True)
 
-    # Get least frequent (highest headway)
+    # Get least frequent (highest headway) and sort ascending
     least_frequent = frequency_data.nlargest(top_n, 'avg_headway_min').copy()
     least_frequent = least_frequent.sort_values('avg_headway_min', ascending=True)
 
@@ -358,13 +408,13 @@ def create_route_frequency_ranking(frequency_data, top_n=15):
         horizontal_spacing=0.2
     )
 
-    # Most frequent - dark blue
+    # Most frequent - royal blue
     fig.add_trace(
         go.Bar(
             x=most_frequent['avg_headway_min'],
             y=most_frequent['route_long_name'],
             orientation='h',
-            marker_color='#003f5c',  # Dark blue
+            marker_color='#4169E1',  # Royal blue
             name='Most Frequent',
             text=most_frequent['avg_headway_min'].round(1),
             textposition='outside',
@@ -373,13 +423,13 @@ def create_route_frequency_ranking(frequency_data, top_n=15):
         row=1, col=1
     )
 
-    # Least frequent - light blue
+    # Least frequent - light royal blue
     fig.add_trace(
         go.Bar(
             x=least_frequent['avg_headway_min'],
             y=least_frequent['route_long_name'],
             orientation='h',
-            marker_color='#7fb3d5',  # Light blue
+            marker_color='#87CEEB',  # Light sky blue (lighter version)
             name='Least Frequent',
             text=least_frequent['avg_headway_min'].round(1),
             textposition='outside',
@@ -391,10 +441,47 @@ def create_route_frequency_ranking(frequency_data, top_n=15):
     fig.update_xaxes(title_text='Avg Headway (min)', row=1, col=1)
     fig.update_xaxes(title_text='Avg Headway (min)', row=1, col=2)
 
+    # Update y-axes to preserve order (important!)
+    fig.update_yaxes(categoryorder='array', categoryarray=most_frequent['route_long_name'].tolist(), row=1, col=1)
+    fig.update_yaxes(categoryorder='array', categoryarray=least_frequent['route_long_name'].tolist(), row=1, col=2)
+
     fig.update_layout(
         title='Route Frequency Comparison',
         showlegend=False,
         height=max(500, 200 + (top_n * 30)),
+        margin=dict(l=250)
+    )
+
+    fig.update_xaxes(
+        title_text='Avg Headway (min)',
+        row=1, col=1,
+        showgrid=False  # Add this
+    )
+
+    fig.update_xaxes(
+        title_text='Avg Headway (min)',
+        row=1, col=2,
+        showgrid=False  # Add this
+    )
+
+    fig.update_yaxes(
+        categoryorder='array',
+        categoryarray=most_frequent['route_long_name'].tolist(),
+        row=1, col=1,
+        showgrid=False  # Add this
+    )
+
+    fig.update_yaxes(
+        categoryorder='array',
+        categoryarray=least_frequent['route_long_name'].tolist(),
+        row=1, col=2,
+        showgrid=False  # Add this
+    )
+
+    fig.update_layout(
+        title='Route Frequency Comparison',
+        showlegend=False,
+        height=max(600, 200 + (top_n * 30)),  # Increase from 500 to 600
         margin=dict(l=250)
     )
 
