@@ -152,8 +152,10 @@ if st.session_state.gtfs_data is not None:
 
                         if response['success']:
                             st.markdown(response['answer'])
-                            with st.expander("See the code"):
-                                st.code(response['code'], language='python')
+                            # Code is hidden by default, user can expand if curious
+                            if response['code']:
+                                with st.expander("🔍 See how this was calculated"):
+                                    st.code(response['code'], language='python')
                         else:
                             st.error(response['answer'])
 
