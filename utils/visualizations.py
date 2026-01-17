@@ -1,12 +1,6 @@
 import folium
 import plotly.express as px
 import plotly.graph_objects as go
-import pandas as pd
-
-import folium
-import plotly.express as px
-import plotly.graph_objects as go
-import pandas as pd
 
 
 def create_route_map(gtfs_data, route_details=None, center_lat=None, center_lon=None):
@@ -349,7 +343,7 @@ def create_route_frequency_ranking(frequency_data, top_n=15):
     """
     # Get most frequent (lowest headway)
     most_frequent = frequency_data.nsmallest(top_n, 'avg_headway_min').copy()
-    most_frequent = most_frequent.sort_values('avg_headway_min', ascending=True)
+    most_frequent = most_frequent.sort_values('avg_headway_min', ascending=True)  # Lowest first
 
     # Get least frequent (highest headway)
     least_frequent = frequency_data.nlargest(top_n, 'avg_headway_min').copy()
@@ -364,13 +358,13 @@ def create_route_frequency_ranking(frequency_data, top_n=15):
         horizontal_spacing=0.2
     )
 
-    # Most frequent
+    # Most frequent - dark blue
     fig.add_trace(
         go.Bar(
             x=most_frequent['avg_headway_min'],
             y=most_frequent['route_long_name'],
             orientation='h',
-            marker_color='#28a745',
+            marker_color='#003f5c',  # Dark blue
             name='Most Frequent',
             text=most_frequent['avg_headway_min'].round(1),
             textposition='outside',
@@ -379,13 +373,13 @@ def create_route_frequency_ranking(frequency_data, top_n=15):
         row=1, col=1
     )
 
-    # Least frequent
+    # Least frequent - light blue
     fig.add_trace(
         go.Bar(
             x=least_frequent['avg_headway_min'],
             y=least_frequent['route_long_name'],
             orientation='h',
-            marker_color='#dc3545',
+            marker_color='#7fb3d5',  # Light blue
             name='Least Frequent',
             text=least_frequent['avg_headway_min'].round(1),
             textposition='outside',
@@ -401,11 +395,10 @@ def create_route_frequency_ranking(frequency_data, top_n=15):
         title='Route Frequency Comparison',
         showlegend=False,
         height=max(500, 200 + (top_n * 30)),
-        margin=dict(l=250)  # Bigger left margin for long names
+        margin=dict(l=250)
     )
 
     return fig
-
 
 def create_stop_heatmap(gtfs_data):
     """
@@ -454,9 +447,9 @@ def create_stop_heatmap(gtfs_data):
 if __name__ == "__main__":
     from data_loader import load_gtfs_from_url
     from gtfs_parser import load_gtfs_tables, get_active_service
-    from metrics_calculator import (calculate_route_frequencies, calculate_trips_by_hour,
-                                    get_route_details, calculate_peak_offpeak_metrics,
-                                    calculate_stop_metrics)
+    from utils.metrics_calculator import (calculate_route_frequencies, calculate_trips_by_hour,
+                                          get_route_details, calculate_peak_offpeak_metrics,
+                                          calculate_stop_metrics)
 
     # Load GTFS data
     print("Loading GTFS data...")
