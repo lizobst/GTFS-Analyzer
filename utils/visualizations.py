@@ -18,19 +18,9 @@ def create_route_map(gtfs_data, route_details=None, center_lat=None, center_lon=
         folium.Map: Interactive map object
     """
 
-    # Determine map center
-    if center_lat is None or center_lon is None:
-        if route_details and 'stops' in route_details:
-            # Center on route's stops
-            center_lat = route_details['stops']['stop_lat'].mean()
-            center_lon = route_details['stops']['stop_lon'].mean()
-        else:
-            # Center on all stops
-            center_lat = gtfs_data['stops']['stop_lat'].mean()
-            center_lon = gtfs_data['stops']['stop_lon'].mean()
-
-    # Adjust center slightly north to account for map viewport
-    center_lat = center_lat + 0.02
+    # Center on stops
+    center_lat = gtfs_data['stops']['stop_lat'].mean()
+    center_lon = gtfs_data['stops']['stop_lon'].mean()
 
     # Create base map
     map_obj = folium.Map(
@@ -222,25 +212,9 @@ def create_system_overview_map(gtfs_data, sample_routes=10):
     Returns:
         folium.Map: Interactive map with multiple routes
     """
-    # Get center based on stop activity (weighted by trips), not just geography
-    if 'stop_times' in gtfs_data and 'stops' in gtfs_data:
-        # Count trips per stop
-        stop_activity = gtfs_data['stop_times'].groupby('stop_id').size().reset_index(name='trip_count')
-        stops_with_activity = pd.merge(gtfs_data['stops'], stop_activity, on='stop_id')
-
-        # Filter to top 50% most active stops for centering
-        threshold = stops_with_activity['trip_count'].quantile(0.5)
-        active_stops = stops_with_activity[stops_with_activity['trip_count'] >= threshold]
-
-        center_lat = active_stops['stop_lat'].mean()
-        center_lon = active_stops['stop_lon'].mean()
-    else:
-        # Fallback to simple mean
-        center_lat = gtfs_data['stops']['stop_lat'].mean()
-        center_lon = gtfs_data['stops']['stop_lon'].mean()
-
-    # Adjust center slightly north to account for map viewport
-    center_lat = center_lat + 0.02
+    # Center on stops
+    center_lat = gtfs_data['stops']['stop_lat'].mean()
+    center_lon = gtfs_data['stops']['stop_lon'].mean()
 
     # Create base map
     map_obj = folium.Map(
@@ -519,24 +493,9 @@ def create_stop_heatmap(gtfs_data):
     """
     from folium.plugins import HeatMap
 
-    # Center on active stops, not all stops
-    if 'stop_times' in gtfs_data:
-        # Count trips per stop
-        stop_activity = gtfs_data['stop_times'].groupby('stop_id').size().reset_index(name='trip_count')
-        stops_with_activity = pd.merge(gtfs_data['stops'], stop_activity, on='stop_id')
-
-        # Center on top 50% most active stops
-        threshold = stops_with_activity['trip_count'].quantile(0.5)
-        active_stops = stops_with_activity[stops_with_activity['trip_count'] >= threshold]
-
-        center_lat = active_stops['stop_lat'].mean()
-        center_lon = active_stops['stop_lon'].mean()
-    else:
-        center_lat = gtfs_data['stops']['stop_lat'].mean()
-        center_lon = gtfs_data['stops']['stop_lon'].mean()
-
-    # Adjust center slightly north to account for map viewport
-    center_lat = center_lat + 0.02
+    # Center on stops
+    center_lat = gtfs_data['stops']['stop_lat'].mean()
+    center_lon = gtfs_data['stops']['stop_lon'].mean()
 
     # Create base map
     map_obj = folium.Map(
