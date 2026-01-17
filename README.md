@@ -42,7 +42,7 @@ A web-based analytics platform that automates GTFS analysis and makes transit da
 ### Interactive Visualizations
 
 <p align="left">
-  <img src="https://github.com/user-attachments/assets/003c25b6-c5ce-4aae-996d-d9e34145fc3c" width="49%" />
+  <img src="https://github.com/user-attachments/assets/003c25b6-c5ce-4aae-996d-d9e34145fc3c" width="80%" />
 </p>
 
 
@@ -53,7 +53,7 @@ A web-based analytics platform that automates GTFS analysis and makes transit da
 
 ### Conversational AI Interface
 <p align="left">
-  <img src="https://github.com/user-attachments/assets/effb80cf-8402-4435-b4d7-45b2abdbe685" width="60%" />
+  <img src="https://github.com/user-attachments/assets/effb80cf-8402-4435-b4d7-45b2abdbe685" width="90%" />
 </p>
 
 Built with Anthropic's Claude API to enable natural language queries:
@@ -76,7 +76,7 @@ Applied this tool to VIA Metropolitan Transit as part of bus bunching research. 
 
 ### What the Data Revealed
 <p align="left">
-  <img src="https://github.com/user-attachments/assets/60adc974-d416-42e5-8bcd-e19d6f5c7aae" width="70%" />
+  <img src="https://github.com/user-attachments/assets/60adc974-d416-42e5-8bcd-e19d6f5c7aae" width="90%" />
 </p>
 
 **High-Frequency Routes:**
@@ -97,7 +97,7 @@ Applied this tool to VIA Metropolitan Transit as part of bus bunching research. 
 
 **Geographic Patterns:**
 <p align="left">
-  <img src="https://github.com/user-attachments/assets/785b034f-6d53-409a-a2aa-7ee7dcdcf41f" width="49%" />
+  <img src="https://github.com/user-attachments/assets/785b034f-6d53-409a-a2aa-7ee7dcdcf41f" width="80%" />
 </p>
 
 - Service highly concentrated in urban core
