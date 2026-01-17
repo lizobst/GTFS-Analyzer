@@ -273,8 +273,14 @@ if st.session_state.gtfs_data is not None:
 
                     # Stops table
                     st.subheader("Stops")
+
+                    # Enhance stops data with sequence number
+                    stops_display = route_details['stops'][
+                        ['stop_sequence', 'stop_name', 'stop_lat', 'stop_lon']].copy()
+                    stops_display.columns = ['Stop #', 'Stop Name', 'Latitude', 'Longitude']
+
                     st.dataframe(
-                        route_details['stops'][['stop_name', 'stop_lat', 'stop_lon']],
+                        stops_display,
                         use_container_width=True,
                         hide_index=True
                     )
@@ -307,9 +313,15 @@ if st.session_state.gtfs_data is not None:
 
             st.divider()
 
+            # Top routes
             st.subheader("Top Routes by Frequency")
+
+            # Rename columns for display
+            freq_display = frequencies.head(10)[['route_short_name', 'route_long_name', 'avg_headway_min']].copy()
+            freq_display.columns = ['Route', 'Route Name', 'Avg Headway (min)']
+
             st.dataframe(
-                frequencies.head(10)[['route_short_name', 'route_long_name', 'avg_headway_min']],
+                freq_display,
                 use_container_width=True,
                 hide_index=True
             )
