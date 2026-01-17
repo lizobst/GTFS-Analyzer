@@ -102,13 +102,24 @@ Your response: result = route_frequencies.nsmallest(1, 'avg_headway_min')[['rout
             exec(generated_code, {"__builtins__": __builtins__}, local_vars)
             result = local_vars['result']
 
-            # Format the result nicely
-            if isinstance(result, pd.DataFrame):
-                answer = result.to_string()
-            elif isinstance(result, dict):
-                answer = json.dumps(result, indent=2)
-            else:
-                answer = str(result)
+            # Ask Claude to explain the result in plain English
+            explanation_message = self.client.messages.create(
+                model="claude-sonnet-4-20250514",
+                max_tokens=1024,
+                messages=[
+                    {
+                        "role": "user",
+                        "content": f"""The user asked: "{question}"
+
+    The data shows: {result}
+
+    Please explain this result in 1-2 friendly, conversational sentences. Be specific with numbers and names. Don't use technical jargon or mention dataframes/code."""
+                    }
+                ]
+            )
+
+            answer = explanation_message.content[0].text.strip()
+            # ================================================================
 
             return {
                 'code': generated_code,
@@ -121,6 +132,6 @@ Your response: result = route_frequencies.nsmallest(1, 'avg_headway_min')[['rout
             return {
                 'code': generated_code if 'generated_code' in locals() else None,
                 'result': None,
-                'answer': f"Error: {str(e)}",
+                'answer': f"I encountered an error: {str(e)}",
                 'success': False
             }
