@@ -271,19 +271,6 @@ if st.session_state.gtfs_data is not None:
                     route_map = create_route_map(gtfs_data, route_details=route_details)
                     st.components.v1.html(route_map._repr_html_(), height=500)
 
-                    # Stops table
-                    st.subheader("Stops")
-
-                    # Enhance stops data with sequence number
-                    stops_display = route_details['stops'][
-                        ['stop_sequence', 'stop_name', 'stop_lat', 'stop_lon']].copy()
-                    stops_display.columns = ['Stop #', 'Stop Name', 'Latitude', 'Longitude']
-
-                    st.dataframe(
-                        stops_display,
-                        use_container_width=True,
-                        hide_index=True
-                    )
 
         with tab4:
             st.header("System Analytics")
