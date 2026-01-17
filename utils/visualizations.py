@@ -29,10 +29,13 @@ def create_route_map(gtfs_data, route_details=None, center_lat=None, center_lon=
             center_lat = gtfs_data['stops']['stop_lat'].mean()
             center_lon = gtfs_data['stops']['stop_lon'].mean()
 
+    # Adjust center slightly north to account for map viewport
+    center_lat = center_lat + 0.02
+
     # Create base map
     map_obj = folium.Map(
         location=[center_lat, center_lon],
-        zoom_start=10,
+        zoom_start=12,
         tiles='OpenStreetMap'
     )
 
@@ -236,10 +239,13 @@ def create_system_overview_map(gtfs_data, sample_routes=10):
         center_lat = gtfs_data['stops']['stop_lat'].mean()
         center_lon = gtfs_data['stops']['stop_lon'].mean()
 
+    # Adjust center slightly north to account for map viewport
+    center_lat = center_lat + 0.02
+
     # Create base map
     map_obj = folium.Map(
         location=[center_lat, center_lon],
-        zoom_start=10,
+        zoom_start=12,
         tiles='OpenStreetMap'
     )
 
@@ -529,10 +535,13 @@ def create_stop_heatmap(gtfs_data):
         center_lat = gtfs_data['stops']['stop_lat'].mean()
         center_lon = gtfs_data['stops']['stop_lon'].mean()
 
+    # Adjust center slightly north to account for map viewport
+    center_lat = center_lat + 0.02
+
     # Create base map
     map_obj = folium.Map(
         location=[center_lat, center_lon],
-        zoom_start=9,
+        zoom_start=11,
         tiles='OpenStreetMap'
     )
 
