@@ -32,7 +32,7 @@ def create_route_map(gtfs_data, route_details=None, center_lat=None, center_lon=
     # Create base map
     map_obj = folium.Map(
         location=[center_lat, center_lon],
-        zoom_start=12,
+        zoom_start=10,
         tiles='OpenStreetMap'
     )
 
@@ -239,7 +239,7 @@ def create_system_overview_map(gtfs_data, sample_routes=10):
     # Create base map
     map_obj = folium.Map(
         location=[center_lat, center_lon],
-        zoom_start=12,
+        zoom_start=10,
         tiles='OpenStreetMap'
     )
 
@@ -532,7 +532,7 @@ def create_stop_heatmap(gtfs_data):
     # Create base map
     map_obj = folium.Map(
         location=[center_lat, center_lon],
-        zoom_start=11,
+        zoom_start=9,
         tiles='OpenStreetMap'
     )
 
