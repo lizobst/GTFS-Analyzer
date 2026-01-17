@@ -1,185 +1,138 @@
 # GTFS Transit Data Analyzer
 
-A data-driven web application that transforms raw GTFS (General Transit Feed Specification) feeds into actionable transit insights. Built to support transit planning, operations analysis, and academic research on service reliability and bus bunching patterns.
+A web-based analytics platform that transforms complex GTFS (General Transit Feed Specification) transit data into actionable insights through automated metrics, interactive visualizations, and conversational AI. Designed for transit planners, researchers, and community advocates, this tool eliminates technical barriers to understanding transit system performance, turning days of analysis into minutes of insight.
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://gtfs-analyzer.streamlit.app/)
 <img width="1824" height="853" alt="image" src="https://github.com/user-attachments/assets/276a1a41-8d79-47d2-b004-c801bc5dae01" />
 
-## Purpose & Applications
+## Problem Statement
 
-This tool was developed as part of research on bus bunching and service reliability in public transit systems. It enables:
+Transit agencies publish schedule data in GTFS (General Transit Feed Specification) format—a standardized, open-source dataset used by agencies worldwide. However, extracting meaningful insights from these files requires technical expertise in data analysis and specialized knowledge of the GTFS structure. This creates barriers for:
 
-### For Transit Agencies
-- **Service Planning**: Identify routes with irregular headways that may experience bunching
-- **Resource Allocation**: Pinpoint high-traffic stops and routes requiring additional service
-- **Performance Monitoring**: Track service span, frequency, and coverage metrics across the network
+- Transit planners needing quick operational insights
+- City officials making data-driven policy decisions
+- Researchers and students analyzing transit systems
+- Community advocates seeking to understand local service
 
-### For Researchers & Analysts
-- **Baseline Analysis**: Establish scheduled service patterns before analyzing real-time performance
-- **Comparative Studies**: Quickly analyze and compare GTFS feeds from multiple transit agencies
-- **Bus Bunching Research**: Identify routes with tight scheduled headways (< 10 min) where bunching is most problematic
-- **Service Equity**: Analyze service distribution across time periods and geographic areas
+**The gap:** No accessible tool exists for non-technical stakeholders to quickly analyze transit performance without writing code or purchasing expensive software.
 
-### For Data Scientists
-- **Reproducible Analysis**: Modular Python architecture for extending with custom metrics
-- **Data Validation**: Automated GTFS feed validation and quality checks
-- **Visualization Pipeline**: Reusable functions for transit data visualization
+## Solution
 
-## Key Insights Enabled
+A web-based analytics platform that automates GTFS analysis and makes transit data accessible through:
 
-- **Frequency Analysis**: Identify which routes have the tightest headways (most prone to bunching when delays occur)
-- **Service Patterns**: Understand how service levels vary throughout the day and across different route types
-- **Network Coverage**: Visualize geographic distribution of stops and identify service gaps
-- **Transfer Hubs**: Locate key stops where multiple routes intersect
-- **Temporal Patterns**: Compare peak vs off-peak service allocation
+- **One-click data loading** - Simply paste a GTFS feed URL
+- **Automated metrics calculation** - System-level and route-level performance indicators
+- **Interactive visualizations** - Maps, charts, and frequency analysis
+- **AI-powered chat interface** - Ask questions in plain English, get instant answers
 
-## Features
+**Business Value:**
+- Reduces analysis time from hours to minutes
+- Democratizes data access for non-technical stakeholders
+- Enables rapid decision-making with real-time insights
+- Scales across any transit system using standardized GTFS format
 
-### System Overview
-- Key metrics: total routes, stops, trips, and service patterns
-- Daily revenue hours and average trip duration
-- Service distribution by time of day
-- Peak vs off-peak service analysis with visual breakdowns
+## Key Features
 
-### Interactive Maps
-- System-wide route visualization (customizable route display)
-- Individual route mapping with all stop locations
-- Stop density heatmap showing service concentration
-- Interactive popups with route and stop details
+### Automated Analytics
+- **System Overview:** Total routes, stops, trips, and service hours
+- **Route Performance:** Frequency analysis and headway calculations
+- **Service Patterns:** Peak vs. off-peak service distribution
+- **Time-based Analysis:** Trip patterns throughout the day
 
-### Route Details
-- Comprehensive metrics for each route including:
-  - Average headway (critical for identifying bunching risk)
-  - Service span and operating hours
-  - Number of stops and trip count
-- Complete stop listings with coordinates
-- Route-specific map visualization with shape data
+### Interactive Visualizations
 
-### Analytics Dashboard
-- **Headway Distribution**: Histogram showing frequency patterns across all routes
-- **Route Frequency Comparison**: Side-by-side view of most and least frequent routes
-- **Busiest Stops**: Ranked list of highest-traffic locations
-- **Temporal Analysis**: Service patterns throughout the day with peak period highlighting
+<p align="left">
+  <img src="https://github.com/user-attachments/assets/003c25b6-c5ce-4aae-996d-d9e34145fc3c" width="49%" />
+</p>
 
-## Technical Implementation
 
-**Data Pipeline:**
-1. **Download & Validation**: Automated GTFS feed retrieval with required file validation
-2. **ETL Processing**: Parse CSV files into structured Pandas DataFrames
-3. **Metric Calculation**: Custom algorithms for headway, service hours, and coverage metrics
-4. **Visualization**: Interactive Folium maps and Plotly charts
+- Geographic route mapping with stop locations
+- Service frequency heatmaps
+- Temporal service distribution charts
+- Route-level performance comparisons
 
-**Key Technical Features:**
-- Caching with `@st.cache_data` for performance optimization
-- Error handling for incomplete or malformed GTFS feeds
-- Session state management for smooth user experience
-- Responsive design that adapts to different screen sizes
-- Support for GTFS feeds with optional files (shapes, frequencies, etc.)
+### Conversational AI Interface
+<p align="left">
+  <img src="https://github.com/user-attachments/assets/effb80cf-8402-4435-b4d7-45b2abdbe685" width="60%" />
+</p>
 
-## Installation
+Built with Anthropic's Claude API to enable natural language queries:
 
-1. Clone the repository:
-```bash
-git clone https://github.com/YOUR_USERNAME/gtfs-analyzer.git
-cd gtfs-analyzer
-```
+**Example Questions:**
+- "What route has the best frequency?"
+- "What's the busiest stop?"
+- "Which routes operate during peak hours?"
+- "What's the average wait time system-wide?"
 
-2. Create a virtual environment:
-```bash
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-```
+**Impact:** Non-technical users can extract insights without SQL knowledge or data science skills.
 
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
+## Technical Architecture
 
-## Usage
+See [Technical Documentation.pdf](Technical%20Documentation.pdf) for detailed implementation details.
 
-Run the Streamlit app:
-```bash
-streamlit run app.py
-```
+## Real-World Application: VIA San Antonio Analysis
 
-The dashboard will open in your browser at `http://localhost:8501`
+Applied this tool to VIA Metropolitan Transit as part of bus bunching research. Analysis completed in **25 seconds** versus the typical **2-3 days** of manual work.
 
-### Analyzing a Transit System
+### What the Data Revealed
+<p align="left">
+  <img src="https://github.com/user-attachments/assets/60adc974-d416-42e5-8bcd-e19d6f5c7aae" width="70%" />
+</p>
 
-1. Enter a GTFS feed URL in the sidebar (direct link to .zip file)
-2. Click "Analyze Feed"
-3. Select a date to analyze service for that specific day
-4. Explore different tabs:
-   - **Overview**: System-wide statistics and service patterns
-   - **System Map**: Geographic visualization of routes and stops
-   - **Route Details**: In-depth analysis of individual routes
-   - **Analytics**: Frequency patterns, stop activity, and comparative metrics
+**High-Frequency Routes:**
+- Identified 15 routes operating on <10 minute headways
+- Routes 10, 20, and 103 average 3-minute headways during peak periods
+- These tight schedules create high susceptibility to bus bunching when delays occur
+- **Insight:** These routes should be priority targets for real-time monitoring and operational interventions
 
-### Example GTFS Feeds
+**Network Topology:**
+- Downtown Transit Center handles 427 trips/day across 12 routes
+- Secondary hubs at University Station (384 trips, 11 routes) and Medical Center (356 trips, 8 routes)
+- **Insight:** Delays at these locations propagate across multiple routes—infrastructure improvements here have system-wide impact
 
-- **VIA San Antonio**: https://www.viainfo.net/BusService/google_transit.zip
-- **Find More**: [Mobility Database](https://database.mobilitydata.org/) contains 2,000+ feeds worldwide
+**Service Distribution:**
+- VIA maintains consistent 290-310 trips/hour from 6 AM to 6 PM
+- Unlike many systems with dramatic peak/off-peak differences
+- **Insight:** Flat service distribution suggests different operational characteristics and potential reliability patterns compared to commuter-focused systems
 
-## Project Structure
-```
-gtfs-analyzer/
-├── app.py                      # Main Streamlit application
-├── utils/
-│   ├── data_loader.py         # GTFS download, extraction, and validation
-│   ├── gtfs_parser.py         # Parse GTFS files into DataFrames
-│   ├── metrics_calculator.py  # Transit metrics and statistical analysis
-│   └── visualizations.py      # Interactive maps and charts
-├── requirements.txt            # Python dependencies
-└── README.md
-```
+**Geographic Patterns:**
+<p align="left">
+  <img src="https://github.com/user-attachments/assets/785b034f-6d53-409a-a2aa-7ee7dcdcf41f" width="49%" />
+</p>
 
-## Metrics Explained
+- Service highly concentrated in urban core
+- Clear coverage gaps in suburban areas
+- Stop density correlates with population density
+- **Insight:** Identifies underserved areas and potential expansion opportunities
 
-- **Headway**: Time between consecutive buses on the same route. Lower headways (< 10 min) indicate frequent service but higher risk of bunching when delays occur.
-- **Revenue Hours**: Total hours buses spend in active service, a key metric for operational costs and resource allocation.
-- **Service Span**: Hours between first and last trip of the day, indicating the breadth of service availability.
-- **Peak vs Off-Peak**: Service levels during rush hours (6-9 AM, 3-6 PM) compared to midday and evening periods.
-- **Stop Activity**: Number of trips and routes serving each stop, identifying transfer hubs and high-demand locations.
+### The Bigger Picture
 
-## Research Context
+This static schedule analysis answers critical "where to look" questions:
 
-This tool was developed as part of thesis research on bus bunching - the phenomenon where buses on the same route cluster together instead of maintaining even spacing. By analyzing scheduled headways and service patterns, this tool helps identify:
+- **Where will problems occur?** High-frequency routes with tight headways
+- **Where do problems spread?** Major transfer hubs
+- **When does service matter most?** Peak periods with highest trip counts
+- **Who is affected?** Geographic analysis shows service equity patterns
 
-- Routes most susceptible to bunching (high-frequency routes with < 10 min headways)
-- Time periods when bunching is most likely (peak hours with tight scheduling)
-- Network characteristics that contribute to service reliability issues
+By establishing baseline patterns from static schedules, subsequent analysis of real-time data can:
 
-The insights from this static GTFS analysis serve as a baseline for comparing against real-time vehicle position data to measure actual bunching occurrence.
+1. Focus on high-risk routes identified through frequency analysis
+2. Monitor critical transfer points where delays propagate
+3. Compare actual operations against scheduled patterns
+4. Quantify reliability issues with statistical rigor
 
-## Technologies Used
+This tool transforms schedule data from a compliance document into a strategic planning resource.
 
-- **Python**: Core programming language
-- **Streamlit**: Interactive web application framework
-- **Pandas**: Data manipulation and analysis
-- **Folium**: Interactive mapping with Leaflet.js
-- **Plotly**: Interactive charts and visualizations
-- **GTFS Specification**: Industry-standard transit data format
+## Getting Started
 
-## Skills Demonstrated
+Visit the [live application](https://gtfs-analyzer.streamlit.app/) to start analyzing transit data immediately.
 
-- **Data Engineering**: ETL pipeline development, data validation, error handling
-- **Statistical Analysis**: Headway calculations, temporal pattern analysis, aggregation
-- **Data Visualization**: Interactive dashboards, geographic mapping, statistical charts
-- **Software Development**: Modular architecture, caching strategies, user experience design
-- **Domain Knowledge**: Transit operations, GTFS specification, service planning concepts
 
-## Future Enhancements
-
-- [ ] Real-time GTFS-RT integration for live vehicle tracking
-- [ ] Bus bunching detection algorithms using real-time data
-- [ ] Historical trend analysis across multiple dates
-- [ ] Export functionality for metrics and visualizations
-- [ ] Advanced filtering (by route type, time windows, service_id)
-
+<br>
 
 ## Author
 
-**Liz** - Data Analytics Student, UT San Antonio  
+**Liz Obst** - Data Analytics Student, UT San Antonio  
 
 *Built as part of a larger project on bus bunching and service reliability in public transit systems.* 
 
